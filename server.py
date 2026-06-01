@@ -28,6 +28,7 @@ DEFAULT_DOWNLOAD_DIR = Path(
 )
 HOST = os.environ.get("HOST", "127.0.0.1")
 PORT = int(os.environ.get("PORT", "8787"))
+IS_RENDER = bool(os.environ.get("RENDER"))
 
 SUPPORTED_HOSTS = (
     "ispot.tv",
@@ -97,7 +98,7 @@ def safe_uploaded_filename(value: str) -> str:
 def load_config() -> dict:
     with config_lock:
         config = default_config()
-        if CONFIG_FILE.exists():
+        if CONFIG_FILE.exists() and not IS_RENDER:
             try:
                 stored = json.loads(CONFIG_FILE.read_text(encoding="utf-8"))
                 if isinstance(stored, dict):
@@ -119,13 +120,16 @@ def save_config(next_config: dict) -> dict:
     config = default_config()
     config["projectName"] = sanitize_project_name(str(next_config.get("projectName", "")))
     folder = str(next_config.get("downloadFolder", "")).strip()
-    config["downloadFolder"] = str(expand_folder(folder or str(DEFAULT_DOWNLOAD_DIR)))
-    with config_lock:
-        CONFIG_FILE.write_text(json.dumps(config, indent=2) + "\n", encoding="utf-8")
+    config["downloadFolder"] = str(expand_folder(str(DEFAULT_DOWNLOAD_DIR) if IS_RENDER else (folder or str(DEFAULT_DOWNLOAD_DIR))))
+    if not IS_RENDER:
+        with config_lock:
+            CONFIG_FILE.write_text(json.dumps(config, indent=2) + "\n", encoding="utf-8")
     return config
 
 
 def create_project_folder(folder_name: str) -> dict:
+    if IS_RENDER:
+        return load_config()
     config = load_config()
     base_folder = expand_folder(config["downloadFolder"])
     if not folder_name.strip():
@@ -140,6 +144,8 @@ def create_project_folder(folder_name: str) -> dict:
 
 
 def pick_folder() -> dict:
+    if IS_RENDER:
+        raise ValueError("Folder selection is only available in the local desktop app.")
     script = (
         'POSIX path of (choose folder with prompt '
         '"Choose where Buddys Treatment Builder should save files")'
