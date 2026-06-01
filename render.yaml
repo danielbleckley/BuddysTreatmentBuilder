@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: buddys-treatment-builder
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python server.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.5
+      - key: HOST
+        value: 0.0.0.0
+      - key: BTB_DOWNLOAD_DIR
+        value: /tmp/buddys-treatment-builder/saved
