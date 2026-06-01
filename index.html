@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Buddys Treatment Builder</title>
+    <script>
+      if (window.location.protocol === "file:") {
+        window.location.replace("http://127.0.0.1:8787/?v=20260531-render-ready");
+      }
+    </script>
+    <link rel="stylesheet" href="/styles.css?v=20260531-render-ready" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="panel">
+        <div class="mast">
+          <div>
+            <p class="eyebrow">Local media saver</p>
+            <h1 id="projectTitle">Buddys Treatment Builder</h1>
+          </div>
+          <span id="health" class="status">Checking...</span>
+        </div>
+
+        <form id="downloadForm" class="download-form">
+          <label for="url">Media link</label>
+          <div class="input-row">
+            <input
+              id="url"
+              name="url"
+              type="url"
+              autocomplete="off"
+              placeholder="Paste an iSpot.tv, Instagram, YouTube, Vimeo, TikTok, or audio URL"
+              required
+            />
+            <button type="submit" id="downloadButton">Download</button>
+          </div>
+
+          <div class="controls">
+            <label class="radio">
+              <input type="radio" name="quality" value="best" checked />
+              Best source quality
+            </label>
+            <label class="radio">
+              <input type="radio" name="quality" value="720" />
+              Smaller 720p copy
+            </label>
+          </div>
+        </form>
+
+        <form id="uploadForm" class="upload-form">
+          <input id="mediaFile" name="mediaFile" type="file" accept="video/*,audio/*" />
+          <label id="dropZone" for="mediaFile" class="drop-zone">
+            <strong>Drop media here</strong>
+            <span>or click to choose a file from your computer</span>
+          </label>
+        </form>
+
+        <form id="settingsForm" class="settings-form">
+          <div class="settings-grid">
+            <label>
+              Project name
+              <input id="projectName" name="projectName" type="text" autocomplete="off" />
+            </label>
+            <label>
+              Save folder
+              <span class="folder-picker">
+                <input
+                  id="downloadFolder"
+                  name="downloadFolder"
+                  type="text"
+                  autocomplete="off"
+                  placeholder="~/Desktop/BuddysTreatmentBuilder"
+                />
+                <button type="button" id="chooseFolderButton">Choose Folder</button>
+              </span>
+            </label>
+          </div>
+          <button type="submit" id="settingsButton">Save Settings</button>
+        </form>
+
+        <form id="newFolderForm" class="new-folder-form">
+          <label>
+            New project folder
+            <input
+              id="newFolderName"
+              name="newFolderName"
+              type="text"
+              autocomplete="off"
+              placeholder="Client campaign name"
+            />
+          </label>
+          <button type="submit" id="newFolderButton">Create Folder</button>
+        </form>
+
+        <div class="folder-line">
+          <span>Saving to</span>
+          <code id="folder">~/Desktop/BuddysTreatmentBuilder</code>
+        </div>
+
+        <p class="note">
+          Use this only for media you own, licensed, or have permission to download for creative work.
+        </p>
+      </section>
+
+      <section class="activity">
+        <div class="section-title">
+          <h2>Activity</h2>
+          <div class="activity-actions">
+            <button id="refreshButton" type="button">Refresh</button>
+            <button id="clearHistoryButton" type="button">Delete History</button>
+          </div>
+        </div>
+        <div id="jobs" class="jobs"></div>
+      </section>
+    </main>
+
+    <script src="/app.js?v=20260531-render-ready"></script>
+  </body>
+</html>
